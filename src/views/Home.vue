@@ -2,6 +2,7 @@
 import { onBeforeMount, onMounted, ref, watch, computed } from "vue";
 import { useDisplay } from "vuetify";
 import { useStore } from "@/store/index";
+import router from "../router/index.js";
 import MovieService from "@/services/movie.service";
 import ListMovieCard from "@/components/ListMovieCard";
 
@@ -10,6 +11,7 @@ const { mdAndUp } = useDisplay();
 
 const currentPageMovies = ref([]);
 const isFavoriteViewSelected = ref(false);
+const selectedSearchMovie = ref();
 
 const getAndSaveGenresObject = () => {
   MovieService.getGenresMoviesList().then((response) => {
@@ -61,6 +63,11 @@ const onChangeViewClick = () => {
     ? (currentPageMovies.value = store.favoriteMovies)
     : (currentPageMovies.value = store.upcomingMovies);
 };
+
+watch(selectedSearchMovie, (n) => {
+  store.selectedMovie = selectedSearchMovie.value;
+  router.push("movie-details");
+});
 </script>
 
 <template>
@@ -68,24 +75,33 @@ const onChangeViewClick = () => {
     <div class="d-flex justify-center">
       <h1 class="title-margin">{{ selectedViewTitle }}</h1>
     </div>
-    <v-row dense>
-      <v-col cols="11" md="4" lg="2">
+    <v-row dense justify="space-between">
+      <v-col cols="11" md="5" lg="3">
         <v-btn
           v-if="isFavoriteViewSelected"
           @click="onChangeViewClick"
           variant="outlined"
         >
-          see upcoming
+          check upcoming
         </v-btn>
         <v-btn v-else @click="onChangeViewClick" variant="outlined">
-          see favorites
+          check favorites
         </v-btn>
       </v-col>
+      <v-col cols="11" md="5" lg="3">
+        <v-autocomplete
+          v-model="selectedSearchMovie"
+          label="Search for upcoming movies"
+          :items="store.upcomingMovies"
+          variant="outlined"
+          density="compact"
+          prepend-inner-icon="mdi-magnify"
+          return-object
+        >
+        </v-autocomplete>
+      </v-col>
     </v-row>
-    <v-row
-      :justify="mdAndUp ? 'start' : 'center'"
-      class="movie-list-margin mb-16"
-    >
+    <v-row justify="center" class="movie-list-margin mb-16">
       <div
         v-if="!isFavoriteViewSelected"
         v-for="(movie, index) in store.upcomingMovies"

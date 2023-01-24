@@ -8,7 +8,7 @@ const { mdAndUp } = useDisplay();
 
 <template>
   <v-app>
-    <v-app-bar flat color="#BFC6CE" height="60">
+    <v-app-bar flat color="#032541" height="60">
       <template v-slot:prepend>
         <div
           style="margin-left: 20vw"
@@ -16,14 +16,20 @@ const { mdAndUp } = useDisplay();
           @click="router.push({ name: 'home' })"
         >
           <v-img :src="logoURL" class="app-bar-logo mr-3" width="50" />
-          <app-bar-title class="text-h5">Movies App</app-bar-title>
+          <app-bar-title class="text-color-grey">Movies App</app-bar-title>
         </div>
       </template>
     </v-app-bar>
     <v-main>
-      <v-container fluid class="h-100 pa-0" :class="mdAndUp ? 'w-75' : 'w-100'">
-        <router-view />
-      </v-container>
+      <div class="w-100 v-container-color">
+        <v-container
+          fluid
+          class="h-100 pa-0"
+          :class="mdAndUp ? 'w-75' : 'w-100'"
+        >
+          <router-view />
+        </v-container>
+      </div>
     </v-main>
   </v-app>
 </template>
@@ -33,7 +39,13 @@ body {
   font-family: system-ui, "Segoe UI", Roboto, Helvetica, Arial, sans-serif,
     "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
 }
+.v-container-color {
+  background-color: #eaeaea;
+}
 .clickable {
   cursor: pointer;
+}
+.text-color-grey {
+  color: #fafafa;
 }
 </style>
