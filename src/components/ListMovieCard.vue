@@ -1,7 +1,37 @@
 <script setup>
-import { defineProps } from "vue";
+import { defineProps, ref, computed } from "vue";
+import { useStore } from "@/store/index";
+import router from "../router/index.js";
+import DetailedMovieCard from "@/components/ListMovieCard";
 
-const props = defineProps(["movie"]);
+const store = useStore();
+
+//TODO verificar se tem necessidade dessa atribuiçao
+const props = defineProps(["movie", "index"]);
+
+const onFavoriteButtonClick = () => {
+  if (store.upcomingMovies[props.index].isFavorite) {
+    store.upcomingMovies[props.index].isFavorite = false;
+  } else {
+    store.upcomingMovies[props.index].isFavorite = true;
+  }
+};
+
+const onSelectedMovieClick = () => {
+  store.selectedMovie = props.movie;
+  router.push("movie-details");
+};
+
+const genreNames = computed(() => {
+  let genres = "";
+  if (props.movie.genreNameList)
+    props.movie.genreNameList.forEach((name, index) => {
+      index === props.movie.genreNameList.length - 1
+        ? (genres += name)
+        : (genres += name + ", ");
+    });
+  return genres;
+});
 </script>
 
 <template>
@@ -9,6 +39,7 @@ const props = defineProps(["movie"]);
     <!--TODO: convert genre ids into corresponding string-->
     <!-- aspect-ratio="4/3" -->
     <v-img
+      @click="onSelectedMovieClick"
       height="280px"
       :src="'https://image.tmdb.org/t/p/original/' + movie.poster_path"
       :lazy-src="'https://image.tmdb.org/t/p/original/' + movie.poster_path"
@@ -21,25 +52,43 @@ const props = defineProps(["movie"]);
           </v-progress-circular></div></template
     ></v-img>
     <div class="margin-left">
-      <v-btn icon class="like-button-position" flat border>
-        <v-icon color="red">mdi-heart</v-icon>
+      <v-btn
+        @click="onFavoriteButtonClick"
+        icon
+        class="like-button-position"
+        flat
+        border
+      >
+        <v-icon v-if="store.upcomingMovies[props.index].isFavorite" color="red"
+          >mdi-heart</v-icon
+        >
+        <v-icon v-else>mdi-heart-outline</v-icon>
       </v-btn>
       <div class="like-button-position">
-        <p class="movie-title-text mx-1 mt-2">{{ movie.original_title }}</p>
-        <p class="genre-text mx-1">Comédia, drama.</p>
+        <p class="movie-title-text mx-1 mt-2" @click="onSelectedMovieClick">
+          {{ movie.original_title }}
+        </p>
+        <p class="genre-text mx-1">{{ genreNames }}</p>
         <p class="genre-text mx-1">{{ movie.release_date }}</p>
       </div>
     </div>
   </v-card>
 </template>
 
-<style>
+<style scoped>
 .card-image {
   background-size: auto 100% !important;
+}
+.card-image:hover {
+  cursor: pointer;
 }
 .movie-title-text {
   font-size: 14px;
   font-weight: 700;
+}
+.movie-title-text:hover {
+  cursor: pointer;
+  color: rgb(1, 180, 228);
 }
 .genre-text {
   font-size: 12px;

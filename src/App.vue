@@ -1,4 +1,5 @@
 <script setup>
+import router from "./router/index.js";
 import logoURL from "./assets/logo.svg";
 </script>
 
@@ -6,13 +7,12 @@ import logoURL from "./assets/logo.svg";
   <v-app>
     <v-app-bar flat color="#BFC6CE" height="60">
       <template v-slot:prepend>
-        <div style="margin-left: 20vw" class="d-flex align-center">
-          <v-img
-            @click="router.push({ name: 'home' })"
-            :src="logoURL"
-            class="app-bar-logo mr-3"
-            width="50"
-          />
+        <div
+          style="margin-left: 20vw"
+          class="d-flex align-center clickable"
+          @click="router.push({ name: 'home' })"
+        >
+          <v-img :src="logoURL" class="app-bar-logo mr-3" width="50" />
           <app-bar-title class="text-h5">Movies App</app-bar-title>
         </div>
       </template>
@@ -30,6 +30,7 @@ body {
   font-family: system-ui, "Segoe UI", Roboto, Helvetica, Arial, sans-serif,
     "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
 }
-.app-bar-logo {
+.clickable {
+  cursor: pointer;
 }
 </style>
