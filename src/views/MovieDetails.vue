@@ -1,7 +1,8 @@
 <script setup>
 import { onBeforeMount, ref, computed } from "vue";
-import { useStore } from "@/store/index";
 import router from "../router/index.js";
+import { useStore } from "@/store/index";
+import AddOrRemoveFromFavoritesButton from "@/components/AddOrRemoveFromFavoritesButton";
 
 const store = useStore();
 
@@ -22,6 +23,8 @@ const getGenresNames = () => {
   });
 };
 
+const onFavoriteButtonClick = () => {};
+
 const genreNames = computed(() => {
   let genres = "";
   if (store.selectedMovie.genreNameList)
@@ -35,8 +38,8 @@ const genreNames = computed(() => {
 </script>
 
 <template>
-  <v-container class="row-margin-top">
-    <v-row justify="center" no-gutters>
+  <v-container class="margin-top">
+    <v-row justify="center">
       <v-col cols="10" md="6" lg="3">
         <v-img
           height="400px"
@@ -57,18 +60,30 @@ const genreNames = computed(() => {
               </v-progress-circular></div></template
         ></v-img>
       </v-col>
-      <v-col cols="10" md="6" lg="5" align-self="">
-        <h2>{{ store.selectedMovie.original_title }}</h2>
-        <h5>{{ store.selectedMovie.overview }}</h5>
-        <p>Release date: {{ store.selectedMovie.release_date }}</p>
-        <p>{{ genreNames }}</p>
+      <v-col cols="10" md="6" lg="5" align-self="center">
+        <div>
+          <h2>{{ store.selectedMovie.original_title }}</h2>
+          <h5>{{ store.selectedMovie.overview }}</h5>
+          <p>Release date: {{ store.selectedMovie.release_date }}</p>
+          <p>{{ genreNames }}</p>
+          <div class="mt-2">
+            <AddOrRemoveFromFavoritesButton />
+            <v-btn
+              @click="router.push({ name: 'home' })"
+              variant="outlined"
+              size="small"
+              class="ml-4"
+              >back to upcoming movies</v-btn
+            >
+          </div>
+        </div>
       </v-col>
     </v-row>
   </v-container>
 </template>
 
 <style>
-.row-margin-top {
+.margin-top {
   margin-top: 10rem;
 }
 </style>

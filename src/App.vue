@@ -1,6 +1,9 @@
 <script setup>
 import router from "./router/index.js";
 import logoURL from "./assets/logo.svg";
+import { useDisplay } from "vuetify";
+
+const { mdAndUp } = useDisplay();
 </script>
 
 <template>
@@ -18,7 +21,7 @@ import logoURL from "./assets/logo.svg";
       </template>
     </v-app-bar>
     <v-main>
-      <v-container fluid class="h-100 w-75 pa-0">
+      <v-container fluid class="h-100 pa-0" :class="mdAndUp ? 'w-75' : 'w-100'">
         <router-view />
       </v-container>
     </v-main>

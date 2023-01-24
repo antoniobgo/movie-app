@@ -4,7 +4,6 @@ import { useDisplay } from "vuetify";
 import { useStore } from "@/store/index";
 import MovieService from "@/services/movie.service";
 import ListMovieCard from "@/components/ListMovieCard";
-import MoviesPagination from "@/components/MoviesPagination";
 
 const store = useStore();
 const { mdAndUp } = useDisplay();
