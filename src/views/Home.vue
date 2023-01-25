@@ -76,11 +76,14 @@ watch(selectedSearchMovie, () => {
 
 <template>
   <div v-if="!isLoadingData">
-    <div class="d-flex justify-center">
-      <h1 class="title-margin">{{ selectedViewTitle }}</h1>
-    </div>
-    <v-row dense justify="space-between">
+    <v-row dense class="pt-15" :justify="mdAndUp ? 'start' : 'center'">
       <v-col cols="11" md="5" lg="3">
+        <div
+          class="d-flex"
+          :class="mdAndUp ? 'justify-start' : 'justify-center'"
+        >
+          <h1 class="title-margin">{{ selectedViewTitle }}</h1>
+        </div>
         <v-btn
           class="on-hover-button"
           v-if="isFavoriteViewSelected"
@@ -97,8 +100,6 @@ watch(selectedSearchMovie, () => {
         >
           check favorites
         </v-btn>
-      </v-col>
-      <v-col cols="11" md="5" lg="3">
         <v-autocomplete
           v-model="selectedSearchMovie"
           label="Search for upcoming movies"
@@ -107,11 +108,17 @@ watch(selectedSearchMovie, () => {
           density="compact"
           prepend-inner-icon="mdi-magnify"
           return-object
+          hide-details
+          class="mt-3"
+          :class="mdAndUp ? '' : 'mb-3'"
         >
         </v-autocomplete>
       </v-col>
     </v-row>
-    <v-row justify="center" class="movie-list-margin mb-16">
+    <v-row
+      :justify="mdAndUp ? 'start' : 'center'"
+      class="movie-list-margin mb-16 mt-0"
+    >
       <div
         v-if="!isFavoriteViewSelected"
         v-for="(movie, index) in store.upcomingMovies"
@@ -143,7 +150,7 @@ watch(selectedSearchMovie, () => {
   /* margin-top: 10rem; */
 }
 .title-margin {
-  margin: 5rem 0 5rem 0;
+  margin-bottom: 12px;
 }
 .on-hover-button:hover {
   color: rgb(1, 180, 228);
