@@ -9,10 +9,10 @@ import ListMovieCard from "@/components/ListMovieCard";
 const store = useStore();
 const { mdAndUp } = useDisplay();
 
-const currentPageMovies = ref([]);
 const isFavoriteViewSelected = ref(false);
 const selectedSearchMovie = ref();
 const isLoadingData = ref(false);
+const apiResponseError = ref(false);
 
 const getAndSaveGenresObject = () => {
   MovieService.getGenresMoviesList().then((response) => {
@@ -37,21 +37,34 @@ onBeforeMount(() => {
   getAndSaveGenresObject();
   if (store.upcomingMovies.length === 50) isLoadingData.value = false;
   else {
-    MovieService.getUpcomingMovies(1).then((response) => {
-      store.upcomingMovies = response.data.results;
-      MovieService.getUpcomingMovies(2).then((response) => {
-        store.upcomingMovies = store.upcomingMovies.concat(
-          response.data.results
-        );
-        MovieService.getUpcomingMovies(3).then((response) => {
-          store.upcomingMovies = store.upcomingMovies.concat(
-            response.data.results.slice(0, 10)
-          );
-        });
+    MovieService.getUpcomingMovies(1)
+      .then((response) => {
+        store.upcomingMovies = response.data.results;
+        MovieService.getUpcomingMovies(2)
+          .then((response) => {
+            store.upcomingMovies = store.upcomingMovies.concat(
+              response.data.results
+            );
+            MovieService.getUpcomingMovies(3)
+              .then((response) => {
+                store.upcomingMovies = store.upcomingMovies.concat(
+                  response.data.results.slice(0, 10)
+                );
+              })
+              .catch((response) => {
+                apiResponseError.value = true;
+              });
+          })
+          .catch((response) => {
+            apiResponseError.value = true;
+          });
+        populateUpcomingMoviesWithGenreNameList();
+        isLoadingData.value = false;
+        if (apiResponseError.value) apiResponseError.value = false;
+      })
+      .catch((response) => {
+        apiResponseError.value = true;
       });
-      populateUpcomingMoviesWithGenreNameList();
-      isLoadingData.value = false;
-    });
   }
 });
 
@@ -59,11 +72,18 @@ const selectedViewTitle = computed(() => {
   return isFavoriteViewSelected.value ? "Favorite Movies" : "Upcoming Movies";
 });
 
+// const isFavoriteListNotEmpty = computed(() => {
+//   debugger;
+//   let favoriteCounter = 0;
+//   store.upcomingMovies.forEach((movie) => {
+//     if (movie.isFavorite) favoriteCounter++;
+//   });
+//   debugger;
+//   return favoriteCounter > 0;
+// });
+
 const onChangeViewClick = () => {
   isFavoriteViewSelected.value = !isFavoriteViewSelected.value;
-  isFavoriteViewSelected.value
-    ? (currentPageMovies.value = store.favoriteMovies)
-    : (currentPageMovies.value = store.upcomingMovies);
 };
 
 watch(selectedSearchMovie, () => {
@@ -132,10 +152,18 @@ watch(selectedSearchMovie, () => {
         v-for="(movie, index) in store.upcomingMovies"
         :key="movie.id"
       >
-        <v-col v-if="movie.isFavorite" cols="8" md="6" lg="2">
+        <!-- <div v-if="isFavoriteListNotEmpty"> -->
+        <v-col v-show="movie.isFavorite" cols="8" md="6" lg="2">
           <ListMovieCard :movie="movie" :index="index"
         /></v-col>
+        <!-- </div> -->
       </div>
+      <!-- <div v-else>
+        <p class="empty-list-text mt-15">
+          Your favorite list is empty. <a href="/">Go back</a> to favorite some
+          movies.
+        </p>
+      </div> -->
     </v-row>
   </div>
   <div v-else class="d-flex align-center justify-center fill-height">
@@ -153,5 +181,8 @@ watch(selectedSearchMovie, () => {
 }
 .on-hover-button:hover {
   color: rgb(1, 180, 228);
+}
+.empty-list-text {
+  font-size: 20px;
 }
 </style>
