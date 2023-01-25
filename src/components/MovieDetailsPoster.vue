@@ -8,10 +8,14 @@ const store = useStore();
   <v-img
     height="400px"
     :src="
-      'https://image.tmdb.org/t/p/original/' + store.selectedMovie.poster_path
+      store.selectedMovie.poster_path
+        ? `https://image.tmdb.org/t/p/original/${store.selectedMovie.poster_path}`
+        : ''
     "
     :lazy-src="
-      'https://image.tmdb.org/t/p/original/' + store.selectedMovie.poster_path
+      store.selectedMovie.poster_path
+        ? `https://image.tmdb.org/t/p/original/${store.selectedMovie.poster_path}`
+        : ''
     "
     fit
     class="card-image rounded-xl"
