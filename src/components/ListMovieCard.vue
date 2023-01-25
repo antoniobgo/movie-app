@@ -80,7 +80,7 @@ const genreNames = computed(() => {
       </v-btn>
       <div class="like-button-position">
         <p class="movie-title-text mx-1 mt-2" @click="onSelectedMovieClick">
-          {{ movie.original_title }}
+          {{ movie.title }}
         </p>
         <p class="genre-text mx-1">{{ genreNames }}</p>
         <p class="genre-text mx-1">{{ movie.release_date }}</p>
