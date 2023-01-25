@@ -103,7 +103,7 @@ watch(selectedSearchMovie, () => {
           <h1 class="title-margin">{{ selectedViewTitle }}</h1>
         </div>
         <v-btn
-          class="on-hover-button"
+          class="on-hover-button-effect"
           v-if="isFavoriteViewSelected"
           @click="onChangeViewClick"
           variant="outlined"
@@ -113,7 +113,7 @@ watch(selectedSearchMovie, () => {
         <v-btn
           v-else
           @click="onChangeViewClick"
-          class="on-hover-button"
+          class="on-hover-button-effect"
           variant="outlined"
         >
           check favorites
@@ -172,14 +172,14 @@ watch(selectedSearchMovie, () => {
   </div>
 </template>
 
-<style scoped>
+<style>
 .movie-list-margin {
   /* margin-top: 10rem; */
 }
 .title-margin {
   margin-bottom: 12px;
 }
-.on-hover-button:hover {
+.on-hover-button-effect:hover {
   color: rgb(1, 180, 228);
 }
 .empty-list-text {

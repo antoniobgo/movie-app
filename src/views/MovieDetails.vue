@@ -3,6 +3,7 @@ import { onBeforeMount, ref, computed } from "vue";
 import router from "../router/index.js";
 import { useStore } from "@/store/index";
 import AddOrRemoveFromFavoritesButton from "@/components/AddOrRemoveFromFavoritesButton";
+import MovieDetailsPoster from "@/components/MovieDetailsPoster";
 
 const store = useStore();
 
@@ -11,8 +12,6 @@ onBeforeMount(() => {
     router.push({ name: "home" });
   window.scrollTo({ top: 0 });
 });
-
-const onFavoriteButtonClick = () => {};
 
 const genreNames = computed(() => {
   let genres = "";
@@ -37,49 +36,25 @@ const movieOverview = computed(() => {
   <v-container class="padding-top card-container">
     <v-row justify="center">
       <v-col cols="10" md="6" lg="3">
-        <v-img
-          height="400px"
-          :src="
-            'https://image.tmdb.org/t/p/original/' +
-            store.selectedMovie.poster_path
-          "
-          :lazy-src="
-            'https://image.tmdb.org/t/p/original/' +
-            store.selectedMovie.poster_path
-          "
-          fit
-          class="card-image rounded-xl"
-        >
-          <template v-slot:placeholder>
-            <div
-              v-if="store.selectedMovie.poster_path"
-              class="d-flex align-center justify-center fill-height"
-            >
-              <v-progress-circular color="grey-lighten-4" indeterminate>
-              </v-progress-circular>
-            </div>
-            <div else class="d-flex align-center justify-center fill-height">
-              <p>Poster not avaiable</p>
-            </div>
-          </template></v-img
-        >
+        <MovieDetailsPoster />
       </v-col>
       <v-col cols="10" md="6" lg="5">
         <div class="mt-5">
           <p class="detailed-title-text">
             {{ store.selectedMovie.original_title }}
           </p>
-          <p class="detailed-movie-date">
+          <p class="detailed-movie-date-genre">
             {{ store.selectedMovie.release_date }} - {{ genreNames }}
           </p>
           <p class="overview-title mt-3">Overview</p>
           <p class="overview-text">{{ movieOverview }}</p>
           <div class="d-flex flex-column mt-2">
-            <AddOrRemoveFromFavoritesButton />
+            <AddOrRemoveFromFavoritesButton class="on-hover-button-effect" />
             <v-btn
               @click="router.push({ name: 'home' })"
               variant="outlined"
               size="small"
+              class="on-hover-button-effect"
               width="250"
               >go back</v-btn
             >
@@ -99,7 +74,7 @@ const movieOverview = computed(() => {
   font-weight: 700;
   line-height: 33px;
 }
-.detailed-movie-date {
+.detailed-movie-date-genre {
   font-size: 13px;
   margin-right: 1px;
 }
