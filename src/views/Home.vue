@@ -12,6 +12,7 @@ const { mdAndUp } = useDisplay();
 const currentPageMovies = ref([]);
 const isFavoriteViewSelected = ref(false);
 const selectedSearchMovie = ref();
+const isLoadingData = ref(false);
 
 const getAndSaveGenresObject = () => {
   MovieService.getGenresMoviesList().then((response) => {
@@ -32,6 +33,7 @@ const populateUpcomingMoviesWithGenreNameList = () => {
 };
 
 onBeforeMount(() => {
+  isLoadingData.value = true;
   getAndSaveGenresObject();
   if (!store.upcomingMovies.length > 0) {
     MovieService.getUpcomingMovies(1).then((response) => {
@@ -47,6 +49,7 @@ onBeforeMount(() => {
         });
       });
       populateUpcomingMoviesWithGenreNameList();
+      isLoadingData.value = false;
     });
   }
 });
@@ -64,27 +67,33 @@ const onChangeViewClick = () => {
     : (currentPageMovies.value = store.upcomingMovies);
 };
 
-watch(selectedSearchMovie, (n) => {
+watch(selectedSearchMovie, () => {
   store.selectedMovie = selectedSearchMovie.value;
   router.push("movie-details");
 });
 </script>
 
 <template>
-  <div>
+  <div v-if="!isLoadingData">
     <div class="d-flex justify-center">
       <h1 class="title-margin">{{ selectedViewTitle }}</h1>
     </div>
     <v-row dense justify="space-between">
       <v-col cols="11" md="5" lg="3">
         <v-btn
+          class="on-hover-button"
           v-if="isFavoriteViewSelected"
           @click="onChangeViewClick"
           variant="outlined"
         >
           check upcoming
         </v-btn>
-        <v-btn v-else @click="onChangeViewClick" variant="outlined">
+        <v-btn
+          v-else
+          @click="onChangeViewClick"
+          class="on-hover-button"
+          variant="outlined"
+        >
           check favorites
         </v-btn>
       </v-col>
@@ -122,6 +131,10 @@ watch(selectedSearchMovie, (n) => {
       </div>
     </v-row>
   </div>
+  <div v-else class="d-flex align-center justify-center fill-height">
+    <v-progress-circular color="grey-lighten-4" size="70" indeterminate>
+    </v-progress-circular>
+  </div>
 </template>
 
 <style scoped>
@@ -130,5 +143,8 @@ watch(selectedSearchMovie, (n) => {
 }
 .title-margin {
   margin: 5rem 0 5rem 0;
+}
+.on-hover-button:hover {
+  color: rgb(1, 180, 228);
 }
 </style>

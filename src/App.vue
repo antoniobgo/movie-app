@@ -16,12 +16,14 @@ const { mdAndUp } = useDisplay();
           @click="router.push({ name: 'home' })"
         >
           <v-img :src="logoURL" class="app-bar-logo mr-3" width="50" />
-          <app-bar-title class="text-color-grey">Movies App</app-bar-title>
+          <app-bar-title class="text-color-grey"
+            >Overdrive Movie App</app-bar-title
+          >
         </div>
       </template>
     </v-app-bar>
     <v-main>
-      <div class="w-100 v-container-color">
+      <div class="w-100 v-container-color h-100">
         <v-container
           fluid
           class="h-100 pa-0"

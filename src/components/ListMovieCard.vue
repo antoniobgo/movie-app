@@ -41,10 +41,19 @@ const genreNames = computed(() => {
     <v-img
       @click="onSelectedMovieClick"
       height="280px"
-      :src="'https://image.tmdb.org/t/p/original/' + movie.poster_path"
-      :lazy-src="'https://image.tmdb.org/t/p/original/' + movie.poster_path"
+      :src="
+        movie.poster_path
+          ? `https://image.tmdb.org/t/p/original/${movie.poster_path}`
+          : ''
+      "
+      :lazy-src="
+        movie.poster_path
+          ? `https://image.tmdb.org/t/p/original/${movie.poster_path}`
+          : ''
+      "
       cover
       class="card-image"
+      :class="!movie.post_path ? 'image-border-bottom' : ''"
     >
       <template v-slot:placeholder>
         <div
@@ -52,8 +61,13 @@ const genreNames = computed(() => {
           class="d-flex align-center justify-center fill-height"
         >
           <v-progress-circular color="grey-lighten-4" indeterminate>
-          </v-progress-circular></div></template
-    ></v-img>
+          </v-progress-circular>
+        </div>
+        <div else class="d-flex align-center justify-center fill-height">
+          <p>Image not avaiable</p>
+        </div></template
+      >
+    </v-img>
     <div class="margin-left">
       <v-btn
         @click="onFavoriteButtonClick"
@@ -103,5 +117,8 @@ const genreNames = computed(() => {
 }
 .margin-left {
   margin-left: 10%;
+}
+.image-border-bottom {
+  border-bottom: 1px solid #b1b4b7;
 }
 </style>

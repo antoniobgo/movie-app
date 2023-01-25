@@ -12,33 +12,29 @@ onBeforeMount(() => {
   window.scrollTo({ top: 0 });
 });
 
-const getGenresNames = () => {
-  let genreString = "";
-  store.selectedMovie.genre_ids.forEach((genre_id) => {
-    switch (genre_id) {
-      case 28:
-        genreString += "Action, ";
-        break;
-    }
-  });
-};
-
 const onFavoriteButtonClick = () => {};
 
 const genreNames = computed(() => {
   let genres = "";
-  if (store.selectedMovie.genreNameList)
+  if (store.selectedMovie.genreNameList) {
     store.selectedMovie.genreNameList.forEach((name, index) => {
       index === store.selectedMovie.genreNameList.length - 1
         ? (genres += name)
         : (genres += name + ", ");
     });
-  return genres;
+    return genres;
+  } else return "Genre is not avaiable.";
+});
+
+const movieOverview = computed(() => {
+  return store.selectedMovie.overview
+    ? `Overview: ${store.selectedMovie.overview}`
+    : "Overview not avaiable.";
 });
 </script>
 
 <template>
-  <v-container class="margin-top">
+  <v-container class="padding-top">
     <v-row justify="center">
       <v-col cols="10" md="6" lg="3">
         <v-img
@@ -63,7 +59,7 @@ const genreNames = computed(() => {
       <v-col cols="10" md="6" lg="5" align-self="center">
         <div>
           <h2>{{ store.selectedMovie.original_title }}</h2>
-          <h5>{{ store.selectedMovie.overview }}</h5>
+          <h5>{{ movieOverview }}</h5>
           <p>Release date: {{ store.selectedMovie.release_date }}</p>
           <p>{{ genreNames }}</p>
           <div class="mt-2">
@@ -83,7 +79,7 @@ const genreNames = computed(() => {
 </template>
 
 <style>
-.margin-top {
-  margin-top: 10rem;
+.padding-top {
+  padding-top: 10rem;
 }
 </style>
