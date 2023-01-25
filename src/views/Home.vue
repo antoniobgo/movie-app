@@ -35,7 +35,8 @@ const populateUpcomingMoviesWithGenreNameList = () => {
 onBeforeMount(() => {
   isLoadingData.value = true;
   getAndSaveGenresObject();
-  if (!store.upcomingMovies.length > 0) {
+  if (store.upcomingMovies.length === 50) isLoadingData.value = false;
+  else {
     MovieService.getUpcomingMovies(1).then((response) => {
       store.upcomingMovies = response.data.results;
       MovieService.getUpcomingMovies(2).then((response) => {
