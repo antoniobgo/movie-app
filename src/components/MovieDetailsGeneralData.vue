@@ -30,7 +30,7 @@ const movieOverview = computed(() => {
     <p class="detailed-title-text">
       {{ store.selectedMovie.original_title }}
     </p>
-    <p class="detailed-movie-date-genre">
+    <p class="detailed-movie-date-genre ml-1">
       {{ store.selectedMovie.release_date }} - {{ genreNames }}
     </p>
     <p class="overview-title mt-3">Overview</p>

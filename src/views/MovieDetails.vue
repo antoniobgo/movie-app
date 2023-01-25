@@ -30,7 +30,7 @@ onBeforeMount(() => {
   </v-container>
 </template>
 
-<style scoped>
+<style>
 .padding-top {
   padding-top: 10rem;
 }
