@@ -53,10 +53,12 @@ onBeforeMount(() => {
               })
               .catch((response) => {
                 apiResponseError.value = true;
+                isLoadingData.value = false;
               });
           })
           .catch((response) => {
             apiResponseError.value = true;
+            isLoadingData.value = false;
           });
         populateUpcomingMoviesWithGenreNameList();
         isLoadingData.value = false;
@@ -64,6 +66,7 @@ onBeforeMount(() => {
       })
       .catch((response) => {
         apiResponseError.value = true;
+        isLoadingData.value = false;
       });
   }
 });
@@ -133,6 +136,12 @@ watch(selectedSearchMovie, () => {
         >
         </v-autocomplete>
       </v-col>
+      <v-col v-if="apiResponseError">
+        <div class="d-flex flex-column align-center">
+          <p class="error-text">Connection error with API.</p>
+          <p class="error-text">Please, reload the page.</p>
+        </div>
+      </v-col>
     </v-row>
     <v-row
       :justify="mdAndUp ? 'start' : 'center'"
@@ -152,18 +161,10 @@ watch(selectedSearchMovie, () => {
         v-for="(movie, index) in store.upcomingMovies"
         :key="movie.id"
       >
-        <!-- <div v-if="isFavoriteListNotEmpty"> -->
         <v-col v-show="movie.isFavorite" cols="8" md="6" lg="2">
           <ListMovieCard :movie="movie" :index="index"
         /></v-col>
-        <!-- </div> -->
       </div>
-      <!-- <div v-else>
-        <p class="empty-list-text mt-15">
-          Your favorite list is empty. <a href="/">Go back</a> to favorite some
-          movies.
-        </p>
-      </div> -->
     </v-row>
   </div>
   <div v-else class="d-flex align-center justify-center fill-height">
@@ -184,5 +185,9 @@ watch(selectedSearchMovie, () => {
 }
 .empty-list-text {
   font-size: 20px;
+}
+.error-text {
+  font-size: 19px;
+  font-weight: 500;
 }
 </style>
