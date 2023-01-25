@@ -6,7 +6,6 @@ import DetailedMovieCard from "@/components/ListMovieCard";
 
 const store = useStore();
 
-//TODO verificar se tem necessidade dessa atribuiçao
 const props = defineProps(["movie", "index"]);
 
 const onFavoriteButtonClick = () => {

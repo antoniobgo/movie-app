@@ -11,11 +11,11 @@ const { mdAndUp } = useDisplay();
     <v-app-bar flat color="#032541" height="60">
       <template v-slot:prepend>
         <div
-          style="margin-left: 20vw"
+          style="margin-left: 12vw"
           class="d-flex align-center clickable"
           @click="router.push({ name: 'home' })"
         >
-          <v-img :src="logoURL" class="app-bar-logo mr-3" width="50" />
+          <v-img :src="logoURL" class="app-bar-logo mr-3" width="40" />
           <app-bar-title class="text-color-grey"
             >Overdrive Movie App</app-bar-title
           >

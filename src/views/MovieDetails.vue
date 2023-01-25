@@ -74,7 +74,6 @@ const movieOverview = computed(() => {
           </p>
           <p class="overview-title mt-3">Overview</p>
           <p class="overview-text">{{ movieOverview }}</p>
-          <!-- <p class="mt-3">{{ genreNames }}</p> -->
           <div class="d-flex flex-column mt-2">
             <AddOrRemoveFromFavoritesButton />
             <v-btn
