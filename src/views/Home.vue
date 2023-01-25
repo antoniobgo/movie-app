@@ -75,16 +75,6 @@ const selectedViewTitle = computed(() => {
   return isFavoriteViewSelected.value ? "Favorite Movies" : "Upcoming Movies";
 });
 
-// const isFavoriteListNotEmpty = computed(() => {
-//   debugger;
-//   let favoriteCounter = 0;
-//   store.upcomingMovies.forEach((movie) => {
-//     if (movie.isFavorite) favoriteCounter++;
-//   });
-//   debugger;
-//   return favoriteCounter > 0;
-// });
-
 const onChangeViewClick = () => {
   isFavoriteViewSelected.value = !isFavoriteViewSelected.value;
 };

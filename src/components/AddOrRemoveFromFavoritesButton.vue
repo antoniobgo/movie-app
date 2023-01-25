@@ -26,4 +26,3 @@ const store = useStore();
     >
   </div>
 </template>
-<style></style>
