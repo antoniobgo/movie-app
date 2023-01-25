@@ -35,8 +35,6 @@ const genreNames = computed(() => {
 
 <template>
   <v-card class="rounded-lg" height="400" width="200">
-    <!--TODO: convert genre ids into corresponding string-->
-    <!-- aspect-ratio="4/3" -->
     <v-img
       @click="onSelectedMovieClick"
       height="280px"
