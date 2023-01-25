@@ -64,7 +64,7 @@ const genreNames = computed(() => {
           </v-progress-circular>
         </div>
         <div else class="d-flex align-center justify-center fill-height">
-          <p>Image not avaiable</p>
+          <p>Poster not avaiable</p>
         </div></template
       >
     </v-img>

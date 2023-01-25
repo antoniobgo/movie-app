@@ -28,13 +28,13 @@ const genreNames = computed(() => {
 
 const movieOverview = computed(() => {
   return store.selectedMovie.overview
-    ? `Overview: ${store.selectedMovie.overview}`
+    ? store.selectedMovie.overview
     : "Overview not avaiable.";
 });
 </script>
 
 <template>
-  <v-container class="padding-top">
+  <v-container class="padding-top card-container">
     <v-row justify="center">
       <v-col cols="10" md="6" lg="3">
         <v-img
@@ -51,25 +51,38 @@ const movieOverview = computed(() => {
           class="card-image rounded-xl"
         >
           <template v-slot:placeholder>
-            <div class="d-flex align-center justify-center fill-height">
+            <div
+              v-if="store.selectedMovie.poster_path"
+              class="d-flex align-center justify-center fill-height"
+            >
               <v-progress-circular color="grey-lighten-4" indeterminate>
-              </v-progress-circular></div></template
-        ></v-img>
+              </v-progress-circular>
+            </div>
+            <div else class="d-flex align-center justify-center fill-height">
+              <p>Poster not avaiable</p>
+            </div>
+          </template></v-img
+        >
       </v-col>
-      <v-col cols="10" md="6" lg="5" align-self="center">
-        <div>
-          <h2>{{ store.selectedMovie.original_title }}</h2>
-          <h5>{{ movieOverview }}</h5>
-          <p>Release date: {{ store.selectedMovie.release_date }}</p>
-          <p>{{ genreNames }}</p>
-          <div class="mt-2">
+      <v-col cols="10" md="6" lg="5">
+        <div class="mt-5">
+          <p class="detailed-title-text">
+            {{ store.selectedMovie.original_title }}
+          </p>
+          <p class="detailed-movie-date">
+            {{ store.selectedMovie.release_date }} - {{ genreNames }}
+          </p>
+          <p class="overview-title mt-3">Overview</p>
+          <p class="overview-text">{{ movieOverview }}</p>
+          <!-- <p class="mt-3">{{ genreNames }}</p> -->
+          <div class="d-flex flex-column mt-2">
             <AddOrRemoveFromFavoritesButton />
             <v-btn
               @click="router.push({ name: 'home' })"
               variant="outlined"
               size="small"
-              class="ml-4"
-              >back to upcoming movies</v-btn
+              width="250"
+              >go back</v-btn
             >
           </div>
         </div>
@@ -78,8 +91,24 @@ const movieOverview = computed(() => {
   </v-container>
 </template>
 
-<style>
+<style scoped>
 .padding-top {
   padding-top: 10rem;
+}
+.detailed-title-text {
+  font-size: 30px;
+  font-weight: 700;
+  line-height: 33px;
+}
+.detailed-movie-date {
+  font-size: 13px;
+  margin-right: 1px;
+}
+.overview-title {
+  font-size: 21px;
+  font-weight: 500;
+}
+.overview-text {
+  font-size: 16px;
 }
 </style>

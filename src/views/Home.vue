@@ -56,9 +56,7 @@ onBeforeMount(() => {
 });
 
 const selectedViewTitle = computed(() => {
-  return isFavoriteViewSelected.value
-    ? "Your Favorite Movies List"
-    : "Upcoming Movies";
+  return isFavoriteViewSelected.value ? "Favorite Movies" : "Upcoming Movies";
 });
 
 const onChangeViewClick = () => {
@@ -101,6 +99,7 @@ watch(selectedSearchMovie, () => {
           check favorites
         </v-btn>
         <v-autocomplete
+          v-if="!isFavoriteViewSelected"
           v-model="selectedSearchMovie"
           label="Search for upcoming movies"
           :items="store.upcomingMovies"
